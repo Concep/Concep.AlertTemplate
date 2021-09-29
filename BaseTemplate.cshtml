@@ -1,0 +1,61 @@
+﻿@model Concep.Alert.Models.AlertGroupedTemplateModel
+@{
+    var contentItems = Model.ContentItems;
+}
+<div class="well">
+    <div class="panel panel-default">        
+            @foreach (var titleGroup in contentItems)
+            {
+                @functions
+                { 
+                    public static string Truncate(string str, int maxLength, string suffix)
+                    {
+                        string result = str; str = System.Text.RegularExpressions.Regex.Replace(str, "<.*?>", string.Empty); if (str.Length > maxLength)
+                        {
+                            str = str.Substring(0, maxLength + 1); str = str.Substring(0, Math.Min(str.Length, str.LastIndexOf(" ") == -1 ? 0 : str.LastIndexOf(" "))); str = str + suffix;
+                        }
+                        return str.Trim();
+                    }
+                }
+                <div class="panel-heading">
+                    <font size="5">
+                        <b>@Raw(titleGroup.FeedTitle)</b>
+                    </font>
+                </div>
+                foreach(var contentItem in titleGroup.Contents)
+                {
+                <div class="panel-body">
+                    <br />
+                    <table cellspacing="0" cellpadding="0" width="100%" border="0" style="font-family: arial,sans-serif; font-size: 10px;">
+                        <tbody>
+                            <tr valign="top">
+                                <td class="">
+                                   <font size="3">
+                                       <a href="@Raw(contentItem.Url)">
+                                            <b>@Raw(contentItem.Title)</b>
+                                        </a>
+                                    </font> 
+                                    <br /> 
+                                    <font font-size="10pt">
+                                        <i>@Raw(((DateTime)contentItem.PublicationDate).ToString("MM/dd/yyyy"))</i>
+                                    </font> 
+                                    <br /> <br /> 
+                                    <img src="@Raw(contentItem.MediaUrl)" /> 
+                                    <font size="2">@Raw(Truncate(contentItem.Description, 250, "..."))</font> 
+                                    <br /> <br /> 
+                                    <font>
+                                        <a href="@Raw(contentItem.Url)">
+                                            Read more...
+                                        </a>
+                                    </font> 
+                                    <br /> <br />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                }
+            }
+        
+    </div>
+</div>
